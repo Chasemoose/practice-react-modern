@@ -15,7 +15,8 @@
     "indent": ["error", 4],
     "react/jsx-indent": ["error", 4],
     "react/jsx-indent-props": ["error", 4],
-    "func-names": ["error", "as-needed"]
+    "react/state-in-constructor": [1, "never"]
+    // "func-names": ["error", "as-needed"]
   },
   "globals": {
     "window": true,
