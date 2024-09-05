@@ -1,4 +1,4 @@
- export default  function validate(data, values) {
+export default  function validate(data, values) {
     const errors = []
     data.forEach(({name, validation}) => {
         const value = values[name]
@@ -8,7 +8,7 @@
         }
         
         if(validation.regex && !validation.regex.test(value))
-        errors.push(`Pole ${name} jest niepoprawnie uzupełnione`)
+            errors.push(`Pole ${name} jest niepoprawnie uzupełnione`)
         
 
     } )

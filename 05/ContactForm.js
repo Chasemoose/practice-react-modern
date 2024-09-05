@@ -37,51 +37,65 @@ const ContactForm = function ContactForm(props) {
 
 
     function renderFieldsList() {
-        return fieldsList.map(({name, type}) => {
+        return fieldsList.map(({ name, type }) => {
             let tag;
-            if(type === 'textarea') {
-                tag = <textarea
-                    onChange={e => dispatch({type: 'change', key: name, value: e.target.value})}
-                    id={name}
-                    name={name}
-                    type={type}
-                    value={state[name]}
-                />
-            } else {
-                tag = <input 
-                    onChange={e => dispatch({type: 'change', key: name, value: e.target.value})}
-                    id={name}
-                    name={name}
-                    type={type}
-                    value={state[name]}
+            if (type === 'textarea') {
+                tag = (
+                    <textarea
+                        onChange={(e) => dispatch({ type: 'change', key: name, value: e.target.value })}
+                        id={name}
+                        name={name}
+                        type={type}
+                        value={state[name]}
                     />
+                );
+            } else {
+                tag = (
+                    <input
+                        onChange={(e) => dispatch({ type: 'change', key: name, value: e.target.value })}
+                        id={name}
+                        name={name}
+                        type={type}
+                        value={state[name]}
+                    />
+                );
             }
-            return ( <div>
-                    <label htmlFor={name}>{name}</label>{tag}
-                    </div>
-                )
-        })
+            return (
+                <div>
+                    <label htmlFor={name}>{name}</label>
+                    {tag}
+                </div>
+            );
+        });
     }
 
-    function handleSubmit (e) {
-        e.preventDefault()
+    function handleSubmit(e) {
+        e.preventDefault();
 
-        setErrors(validate(fieldsList, state))
-
+        setErrors(validate(fieldsList, state));
     }
 
-    function renderErrrors() {
-        return errors.length > 0 && <ul>{errors.map(message => <li>{message}</li>)}</ul> 
+    function renderErrors() {
+        return (
+            errors.length > 0 && (
+                <ul>
+                    {errors.map((message) => (
+                        <li>{message}</li>
+                    ))}
+                </ul>
+            )
+        );
     }
 
-
-    return <form onSubmit={handleSubmit}>
-            {renderErrrors()}
+    return (
+        <form onSubmit={handleSubmit}>
+            {renderErrors()}
             {renderFieldsList()}
             <div>
-                <input type="submit"></input>
+                <input type="submit" />
             </div>
-        </form>;
+        </form>
+    );
 };
 
 ContactForm.propTypes = {
