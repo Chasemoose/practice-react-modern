@@ -1,15 +1,23 @@
-import React from 'react';
+import React, {useReducer, useState} from 'react';
+import PropTypes from 'prop-types'
+
+import validate from "./helpToValidate" 
 
 // import account from './account';
 
-const ContactForm = function ContactForm() {
-    const init = {
-        name: '',
-        email: '',
-        phone: '',
-        topic: '',
-        content: '',
-    }
+const ContactForm = function ContactForm(props) {
+
+    const { fieldsList } = props
+
+
+
+    const init = {}
+    fieldsList.forEach(({name, defaultValue}) => {
+        init[name] = defaultValue
+    })
+
+
+  
 
 
     function reducer(state, action) {
@@ -20,42 +28,69 @@ const ContactForm = function ContactForm() {
             default:
                 return state
         }
-        return state
     }
 
 
     const [state, dispatch] = useReducer(reducer, init)
 
-    const fieldsList = [
-        {name: 'name', type: 'text'}
-        {name: 'email', type: 'email'}
-        {name: 'phone', type: 'text'}
-        {name: 'topic', type: 'text'}
-        {name: 'content', type: 'textarea'}
-    ]
+    const [ errors, setErrors] = useState([])
+
 
     function renderFieldsList() {
-        return fieldsList.map(item => {
+        return fieldsList.map(({name, type}) => {
             let tag;
-            if(item.type === 'textarea') {
-                tag = <textarea />
+            if(type === 'textarea') {
+                tag = <textarea
+                    onChange={e => dispatch({type: 'change', key: name, value: e.target.value})}
+                    id={name}
+                    name={name}
+                    type={type}
+                    value={state[name]}
+                />
             } else {
-                tag = <input onChange={e => dispatch({type: 'change', key: item.name, value: e.target.value})} id={input.name} name={item.name} type={item.type} />
+                tag = <input 
+                    onChange={e => dispatch({type: 'change', key: name, value: e.target.value})}
+                    id={name}
+                    name={name}
+                    type={type}
+                    value={state[name]}
+                    />
             }
             return ( <div>
-                    <label htmlFor={item.name}>{item.name}</label>{tag}
+                    <label htmlFor={name}>{name}</label>{tag}
                     </div>
                 )
         })
     }
 
+    function handleSubmit (e) {
+        e.preventDefault()
 
-    return <form>
+        setErrors(validate(fieldsList, state))
+
+    }
+
+    function renderErrrors() {
+        return errors.length > 0 && <ul>{errors.map(message => <li>{message}</li>)}</ul> 
+    }
+
+
+    return <form onSubmit={handleSubmit}>
+            {renderErrrors()}
             {renderFieldsList()}
             <div>
                 <input type="submit"></input>
             </div>
         </form>;
 };
+
+ContactForm.propTypes = {
+    fieldsList: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string,
+        type: PropTypes.string,
+        defaultValue: PropTypes.string
+    })).isRequired
+}
+
 
 export default ContactForm;
