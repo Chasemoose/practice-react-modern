@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import Clock from './Clock';
 
 const ClockDate = function ClockDate(props) {
     function getCorrectMonthFormat(monthNumber) {
