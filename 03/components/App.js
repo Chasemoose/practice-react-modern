@@ -6,14 +6,14 @@ import Div from "./Div";
 import { TextContext } from "../context";
 
 const App = function App() {
-  return (
-    <section>
-      <Box />
-      <TextContext.provider value="sibling">
-        <Div />
-      </TextContext.provider>
-    </section>
-  );
+    return (
+        <section>
+            <Box />
+            <TextContext.Provider value="sibling">
+                <Div />
+            </TextContext.Provider>
+        </section>
+    );
 };
 
 export default App;
